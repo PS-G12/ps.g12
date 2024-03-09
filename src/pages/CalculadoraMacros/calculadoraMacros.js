@@ -55,7 +55,9 @@ function CalculadoraMacros(){
         setMeta(event.target.value);
     }
 
-    const calcularMacros = () => {
+    const calcularMacros = (event) => {
+        event.preventDefault();
+        
         if (!altura || !peso || !edad) {
             alert('Por favor, complete todos los campos');
             return;
@@ -190,7 +192,7 @@ function CalculadoraMacros(){
                         </ul>
                     </div>
                 </div>
-                <button className="calcularMacros" onClick={calcularMacros}>Calcular</button>
+                <button className="calcularMacros" onClick={(event) => calcularMacros(event)}>Calcular</button>
                 <div className="resultado-calculoMacros">
                     <div className="resultado-label">Los macronutrientes necesarios son:</div>
                     <div className="contenedor-recuadros">

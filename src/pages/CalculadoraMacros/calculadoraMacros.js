@@ -1,240 +1,240 @@
 import React, { useState } from "react";
-import './calculadoraMacros.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faFire, faCheese, faBreadSlice, faFish, faPlay } from '@fortawesome/free-solid-svg-icons'
+import './calculadoraMacros.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFire, faCheese, faBreadSlice, faFish, faPlay } from '@fortawesome/free-solid-svg-icons';
 import Header from '../../components/Header/header';
+import Footer from "../../components/Footer/footer";
 
-function CalculadoraMacros(){
+function CalculadoraMacros() {
 
-    // Lectura de datos: sistema, altura, edad, peso, genero, actividad y meta
-    const [sistema, setSistema] = useState("metrico");
-    const [altura, setAltura] = useState("");
-    const [edad, setEdad] = useState("");
-    const [peso, setPeso] = useState("");
-    const [genero, setGenero] = useState("hombre");
-    const [actividad, setActividad] = useState("sedentario");
-    const [meta, setMeta] = useState("perder-peso");
+    // Data inputs: system, height, age, weight, gender, activity, and goal
+    const [system, setSystem] = useState("metric");
+    const [height, setHeight] = useState("");
+    const [age, setAge] = useState("");
+    const [weight, setWeight] = useState("");
+    const [gender, setGender] = useState("male");
+    const [activity, setActivity] = useState("sedentary");
+    const [goal, setGoal] = useState("lose-weight");
 
-    // Resultados de calorías, proteínas, carbohidratos y grasas
-    const [resultadoCalorias, setCalorias] = useState("");
-    const [resultadoProteinas, setProteinas] = useState("");
-    const [resultadoCarbohidratos, setCarbohidratos] = useState("");
-    const [resultadoGrasas, setGrasas] = useState("");
+    // Results of calories, proteins, carbohydrates, and fats
+    const [caloriesResult, setCalories] = useState("");
+    const [proteinsResult, setProteins] = useState("");
+    const [carbohydratesResult, setCarbohydrates] = useState("");
+    const [fatsResult, setFats] = useState("");
 
     let checks = document.querySelectorAll("input[type=checkbox]");
     checks.forEach(check => check.addEventListener("change", function(e){
-        let marcado = e.target.checked;
+        let marked = e.target.checked;
         checks.forEach(check => check.checked = false);
-        e.target.checked = marcado;
+        e.target.checked = marked;
     }));
 
-    const LeerEdad = (event) => {
-        setEdad(event.target.value);
+    const readAge = (event) => {
+        setAge(event.target.value);
     };
 
-    const LeerAltura = (event) => {
-        setAltura(event.target.value);
+    const readHeight = (event) => {
+        setHeight(event.target.value);
     };
 
-    const LeerPeso = (event) => {
-        setPeso(event.target.value);
+    const readWeight = (event) => {
+        setWeight(event.target.value);
     };
 
-    const seleccionSistema = (event) => {
-        setSistema(event.target.value);
-    }
+    const systemSelection = (event) => {
+        setSystem(event.target.value);
+    };
 
-    const seleccionGenero = (event) => {
-        setGenero(event.target.value);
-    }
+    const genderSelection = (event) => {
+        setGender(event.target.value);
+    };
 
-    const seleccionActividad = (event) => {
-        setActividad(event.target.value);
-    }
+    const activitySelection = (event) => {
+        setActivity(event.target.value);
+    };
 
-    const seleccionMeta = (event) => {
-        setMeta(event.target.value);
-    }
+    const goalSelection = (event) => {
+        setGoal(event.target.value);
+    };
 
-    const calcularMacros = (event) => {
+    const macrosCalculation = (event) => {
         event.preventDefault();
         
-        if (!altura || !peso || !edad) {
-            alert('Por favor, complete todos los campos');
+        if (!height || !weight || !age) {
+            alert('Please fill out all fields');
             return;
         }
 
-        const factorSedentario = 1.2;
-        const factorModerado = 1.375;
-        const factorIntenso = 1.60;
+        const sedentaryFactor = 1.2;
+        const moderateFactor = 1.375;
+        const intenseFactor = 1.60;
 
-        let alturaUser = 0;
-        let pesoUser = 0;
+        let heightUser = 0;
+        let weightUser = 0;
 
-        if (sistema === "anglosajon") {
-            alturaUser = parseFloat(altura.replace(",", "."));
-            pesoUser = parseFloat(peso.replace(",", "."));
+        if (system === "imperial") {
+            heightUser = parseFloat(height.replace(",", "."));
+            weightUser = parseFloat(weight.replace(",", "."));
       
-            alturaUser = alturaUser / 0.032808; //De pies a centimetros
-            pesoUser = pesoUser / 2.2046; //De libras a kilos
+            heightUser = heightUser / 0.032808; // From feet to centimeters
+            weightUser = weightUser / 2.2046; // From pounds to kilograms
         } else {
-            alturaUser = parseFloat(altura);
-            pesoUser = parseFloat(peso.replace(",", "."));
+            heightUser = parseFloat(height);
+            weightUser = parseFloat(weight.replace(",", "."));
         }
 
-
-
-        let objetivoCalorias;
-        switch (meta) {
-            case "ganar-peso":
-                objetivoCalorias = 500; 
+        let caloriesObjective;
+        switch (goal) {
+            case "gain-weight":
+                caloriesObjective = 500; 
                 break;
-            case "perder-peso":
-                objetivoCalorias = -500; 
+            case "lose-weight":
+                caloriesObjective = -500; 
                 break;
-            case "mantener-peso":
+            case "maintain-weight":
             default:
-                objetivoCalorias = 0; 
+                caloriesObjective = 0; 
                 break;
         }
     
-        let TMB; // Tasa metabólica basal
-        let actividadFactor; // Factor de actividad
+        let BMR; // Basal Metabolic Rate
+        let activityFactor; // Activity factor
     
-        // Calcular la TMB según el género
-        if (genero === "hombre") {
-            TMB = 10 * pesoUser + 6.25 * alturaUser - 5 * edad + 5;
+        // Calculate BMR based on gender
+        if (gender === "male") {
+            BMR = 10 * weightUser + 6.25 * heightUser - 5 * age + 5;
         } else {
-            TMB = 10 * pesoUser + 6.25 * alturaUser - 5 * edad - 161;
+            BMR = 10 * weightUser + 6.25 * heightUser - 5 * age - 161;
         }
     
-        // Calcular el factor de actividad
-        if (actividad === "sedentario") {
-            actividadFactor = factorSedentario;
-        } else if (actividad === "moderado") {
-            actividadFactor = factorModerado;
+        // Calculate activity factor
+        if (activity === "sedentary") {
+            activityFactor = sedentaryFactor;
+        } else if (activity === "moderate") {
+            activityFactor = moderateFactor;
         } else {
-            actividadFactor = factorIntenso;
+            activityFactor = intenseFactor;
         }
 
-        
+        // Calculate necessary calories per day
+        const calories = BMR * activityFactor + caloriesObjective;
+        setCalories(calories.toFixed(2));
     
-        // Calcular las calorías necesarias por día
-        const calorias = TMB * actividadFactor + objetivoCalorias;
-        setCalorias(calorias.toFixed(2));
+        // Calculate necessary proteins
+        const proteins = calories * 0.25 / 4; // In grams
+        setProteins(proteins.toFixed(2));
     
-        // Calcular las proteínas necesarias
-        const proteinas = calorias * 0.25 / 4; // En gramos
-        setProteinas(proteinas.toFixed(2));
+        // Calculate necessary fats
+        const fats = (calories * 0.25) / 9; // 25% of daily calories come from fats
+        setFats(fats.toFixed(2));
     
-        // Calcular las grasas necesarias
-        const grasas = (calorias * 0.25) / 9; // El 25% de las calorías diarias proviene de grasas
-        setGrasas(grasas.toFixed(2));
-    
-        // Calcular los carbohidratos necesarios
-        const carbohidratos = (calorias - (proteinas * 4) - (grasas * 9)) / 4; // Los carbohidratos aportan 4 calorías por gramo
-        setCarbohidratos(carbohidratos.toFixed(2));
+        // Calculate necessary carbohydrates
+        const carbohydrates = (calories - (proteins * 4) - (fats * 9)) / 4; // Carbohydrates provide 4 calories per gram
+        setCarbohydrates(carbohydrates.toFixed(2));
     };
 
     return (
-        <div className="contenedor-macros">
-            {/* <Header />  */}
-            <p>MACRONUTRIENTS AND CALORIES</p>
-            <div className="intro">
-                <span className="dato1">Calculate the necessary macronutrients you should consume based on your height, weight, and goals.</span>
-                <span className="dato2n">Choose a unit of measurement:</span>
-                <div className="seleccion-medidas">
-                    <label>
-                        Imperial system
-                        <input type="checkbox" value="anglosajon" onChange={seleccionSistema}></input>
-                    </label>
-                    <label>
-                        Metric system
-                        <input type="checkbox" defaultChecked value="metrico" onChange={seleccionSistema}></input>
-                    </label>
+        <div>
+            <Header />
+            <div className="macros-container-calc">
+                {/* <Header />  */}
+                <p>MACRONUTRIENTS AND CALORIES</p>
+                <div className="intro">
+                    <span className="data1">Calculate the necessary macronutrients you should consume based on your height, weight, and goals.</span>
+                    <span className="data2">Choose a unit of measurement:</span>
+                    <div className="measurement-selection">
+                        <label>
+                            Imperial system
+                            <input type="checkbox" value="imperial" onChange={systemSelection}></input>
+                        </label>
+                        <label>
+                            Metric system
+                            <input type="checkbox" defaultChecked value="metric" onChange={systemSelection}></input>
+                        </label>
+                    </div>
                 </div>
+                <form>
+                    <div className="row1">
+                        <div className="enter-age">
+                            <div className="age">
+                                <label className="age-info">{"Age:"}</label>
+                                <input type="text" placeholder="Age" className="input-age" value={age} onChange={readAge} required></input>
+                            </div>
+                        </div>
+            
+                        <div className="enter-gender">
+                            <div className="gender">
+                                <label className="gender-info">{"Gender:"}</label>
+                                <select id="gender-info" className="gender-options" value={gender} onChange={genderSelection}>
+                                    <option value="male">Male</option> 
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="input-height">
+                            <div className="height">
+                                <label className="height-info">{system === "imperial" ? "Height (ft):" : "Height (cm):"}</label>
+                                <input type="text" placeholder="Height" className="input-height" value={height} onChange={readHeight} required></input>
+                            </div>
+                        </div>
+            
+                        <div className="input-weight">
+                            <div className="weight">
+                                <label className="weight-info">{system === "imperial" ? "Weight (lbs):" : "Weight (kg):"}</label>
+                                <input type="text" placeholder="Weight" className="input-weight" value={weight} onChange={readWeight} required></input>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row2">
+                        <div className="enter-activity">
+                            <div className="activity">
+                                <label htmlFor="activity-fisica">Current Physical Activity:</label>
+                                <select id="activity-fisica" className="input-activity" value={activity} onChange={activitySelection}>
+                                    <option value="sedentary">Sedentary</option> 
+                                    <option value="moderate">Moderate</option>
+                                    <option value="intense">Intense</option>
+                                </select>
+                            </div>
+                        </div>
+            
+                        <div className="enter-goal">
+                            <label className="goal-info">{"Goal:"}</label>
+                            <ul>
+                                <li><input type="radio" id="lose-weight" name="goal" value="lose-weight" checked={goal === "lose-weight"} onChange={goalSelection}/><label htmlFor="lose-weight">Lose weight</label></li>
+                                <li><input type="radio" id="maintain" name="goal" value="maintain" checked={goal === "maintain"} onChange={goalSelection}/><label htmlFor="maintain">Keep weight</label></li>
+                                <li><input type="radio" id="gain-weight" name="goal" value="gain-weight" checked={goal === "gain-weight"} onChange={goalSelection}/><label htmlFor="gain-weight">Gain weight</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button className="calculate-macros" onClick={macrosCalculation}>Calculate</button>
+                    <div className="macros-calculation-result">
+                        <div className="result-label">The necessary macronutrients are:</div>
+                        <div className="boxes-container">
+                            <div className="box">
+                                <FontAwesomeIcon icon={faFire} className="icon-calories" />
+                                <p>Calories</p>
+                                <p className="info" id="calories-info">{caloriesResult} calories per day</p>
+                            </div>
+                            <div className="box">
+                                <FontAwesomeIcon icon={faBreadSlice} className="icon-carbs" />
+                                <p>Carbohydrates</p>
+                                <p className="info" id="carbohydrates-info">{carbohydratesResult} grams per day</p>
+                            </div>
+                            <div className="box">
+                                <FontAwesomeIcon icon={faFish} className="icon-proteins" />
+                                <p>Proteins</p>
+                                <p className="info" id="proteins-info">{proteinsResult} grams per day </p>
+                            </div>
+                            <div className="box">
+                                <FontAwesomeIcon icon={faCheese} className="icon-fats" />
+                                <p>Fats</p>
+                                <p className="info" id="fats-info">{fatsResult} grams per day</p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <form>
-                <div className="fila1">
-                    <div className="introducir-edad">
-                        <div className="edad">
-                            <label className="info-edad">{"Age:"}</label>
-                            <input type="text" placeholder="Age" className="input-edad" value={edad} onChange={LeerEdad} required></input>
-                        </div>
-                    </div>
-        
-                    <div className="introducir-genero">
-                        <div className="genero">
-                            <label className="info-genero">{"Gender:"}</label>
-                            <select id="info-genero" className="info-generos" value={genero} onChange={seleccionGenero}>
-                                <option value="hombre">Male</option> 
-                                <option value="mujer">Female</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="input-altura">
-                        <div className="altura">
-                            <label className="info-altura">{sistema === "anglosajon" ? "Height (ft):" : "Height (cm):"}</label>
-                            <input type="text" placeholder="Height" className="input-altura" value={altura} onChange={LeerAltura} required></input>
-                        </div>
-                    </div>
-        
-                    <div className="input-peso">
-                        <div className="peso">
-                            <label className="info-peso">{sistema === "anglosajon" ? "Weight (lbs):" : "Weight (kg):"}</label>
-                            <input type="text" placeholder="Weight" className="input-peso" value={peso} onChange={LeerPeso} required></input>
-                        </div>
-                    </div>
-                </div>
-                <div className="fila2">
-                    <div className="introducir-actividad">
-                        <div className="actividad">
-                            <label htmlFor="actividad-fisica">Current Physical Activity:</label>
-                            <select id="actividad-fisica" className="input-actividad" value={actividad} onChange={seleccionActividad}>
-                                <option value="sedentario">Sedentary</option> 
-                                <option value="moderado">Moderate</option>
-                                <option value="intensa">Intense</option>
-                            </select>
-                        </div>
-                    </div>
-        
-                    <div className="introducir-meta">
-                        <label className="info-meta">{"Goal:"}</label>
-                        <ul>
-                            <li><input type="radio" id="perder-peso" name="meta" value="perder-peso" checked={meta === "perder-peso"} onChange={seleccionMeta}/><label htmlFor="perder-peso">Lose weight</label></li>
-                            <li><input type="radio" id="mantener" name="meta" value="mantener" checked={meta === "mantener"} onChange={seleccionMeta}/><label htmlFor="mantener">Keep weight</label></li>
-                            <li><input type="radio" id="ganar-peso" name="meta" value="ganar-peso" checked={meta === "ganar-peso"} onChange={seleccionMeta}/><label htmlFor="ganar-peso">Gain weight</label></li>
-                        </ul>
-                    </div>
-                </div>
-                <button className="calcularMacros" onClick={calcularMacros}>Calculate</button>
-                <div className="resultado-calculoMacros">
-                    <div className="resultado-label">The necessary macronutrients are:</div>
-                    <div className="contenedor-recuadros">
-                        <div className="recuadro">
-                            <FontAwesomeIcon icon={faFire} className="icon-calorias" />
-                            <p>Calories</p>
-                            <p className="info" id="calorias-info">{resultadoCalorias} calories per day</p>
-                        </div>
-                        <div className="recuadro">
-                            <FontAwesomeIcon icon={faBreadSlice} className="icon-carbos" />
-                            <p>Carbohydrates</p>
-                            <p className="info" id="carbohidratos-info">{resultadoCarbohidratos} grams per day</p>
-                        </div>
-                        <div className="recuadro">
-                            <FontAwesomeIcon icon={faFish} className="icon-proteinas" />
-                            <p>Proteins</p>
-                            <p className="info" id="proteinas-info">{resultadoProteinas} grams per day </p>
-                        </div>
-                        <div className="recuadro">
-                            <FontAwesomeIcon icon={faCheese} className="icon-grasas" />
-                            <p>Fats</p>
-                            <p className="info" id="grasas-info">{resultadoGrasas} grams per day</p>
-                        </div>
-                    </div>
-                </div>
-                <button className="calc-imc">BMI Calculator<FontAwesomeIcon icon={faPlay} className="icon-playIMC"/></button>
-            </form>
+            <Footer />
         </div>
     );
 }

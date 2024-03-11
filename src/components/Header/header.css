@@ -66,6 +66,7 @@ nav ul {
 
 nav ul .submenu{
   text-align: justify;
+  z-index: 9999;
 }
 
 nav ul li {
